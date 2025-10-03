@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useCurrency } from '../context/CurrencyContext'
+import CurrencyToggle from '../components/CurrencyToggle'
 
 function TripSuggestions({ 
   tripData, 
@@ -11,6 +13,7 @@ function TripSuggestions({
   setSelectedNonVegAccommodation
 }) {
   const navigate = useNavigate()
+  const { formatPrice } = useCurrency()
   const [activeTab, setActiveTab] = useState('places')
 
   if (!tripData) {
@@ -62,6 +65,20 @@ function TripSuggestions({
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-7xl mx-auto">
+        {/* Header with Back Button and Currency Toggle */}
+        <div className="flex justify-between items-center mb-8">
+          <button
+            onClick={() => navigate('/planner')}
+            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-100 transition duration-200 shadow-md"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span className="font-medium">Back to Planner</span>
+          </button>
+          <CurrencyToggle />
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-gray-800 mb-3">Your Trip to {destination.name}</h1>
@@ -91,12 +108,12 @@ function TripSuggestions({
             <div className="text-center">
               <div className="text-3xl mb-2">💰</div>
               <div className="text-sm opacity-90">Your Budget</div>
-              <div className="text-lg font-bold">${budget.toLocaleString()}</div>
+              <div className="text-lg font-bold">{formatPrice(budget)}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl mb-2">💵</div>
               <div className="text-sm opacity-90">Estimated Cost</div>
-              <div className="text-lg font-bold">${estimatedTotalCost.toLocaleString()}</div>
+              <div className="text-lg font-bold">{formatPrice(estimatedTotalCost)}</div>
             </div>
           </div>
         </div>
@@ -169,7 +186,7 @@ function TripSuggestions({
                       </div>
                       <p className="text-gray-600 text-sm mb-4">{place.description}</p>
                       <div className="flex justify-between items-center">
-                        <span className="text-2xl font-bold text-indigo-600">${place.cost}</span>
+                        <span className="text-2xl font-bold text-indigo-600">{formatPrice(place.cost)}</span>
                         <span className="text-sm text-gray-500">per person</span>
                       </div>
                     </div>

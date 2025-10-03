@@ -4,6 +4,7 @@
       "id": 1,
       "name": "Paris, France",
       "country": "France",
+      "type": "international",
       "baseCost": 1500,
       "nearbyPlaces": [
         {
@@ -86,6 +87,7 @@
       "id": 2,
       "name": "Tokyo, Japan",
       "country": "Japan",
+      "type": "international",
       "baseCost": 2000,
       "nearbyPlaces": [
         {
@@ -168,6 +170,7 @@
       "id": 3,
       "name": "New York, USA",
       "country": "USA",
+      "type": "international",
       "baseCost": 1800,
       "nearbyPlaces": [
         {
@@ -247,165 +250,418 @@
       }
     },
     {
-      "id": 4,
-      "name": "Dubai, UAE",
-      "country": "UAE",
-      "baseCost": 2200,
+      "id": 6,
+      "name": "Goa",
+      "country": "India",
+      "type": "local",
+      "baseCost": 300,
       "nearbyPlaces": [
         {
-          "id": 13,
-          "name": "Burj Khalifa",
-          "cost": 120,
-          "description": "World's tallest building with observation deck"
+          "id": 21,
+          "name": "Baga Beach",
+          "cost": 5,
+          "description": "Popular beach with water sports and nightlife"
         },
         {
-          "id": 14,
-          "name": "Dubai Mall",
-          "cost": 50,
-          "description": "Largest shopping mall with aquarium"
+          "id": 22,
+          "name": "Fort Aguada",
+          "cost": 3,
+          "description": "17th-century Portuguese fort overlooking the Arabian Sea"
         },
         {
-          "id": 15,
-          "name": "Palm Jumeirah",
-          "cost": 80,
-          "description": "Artificial archipelago with luxury resorts"
-        },
-        {
-          "id": 16,
-          "name": "Desert Safari",
-          "cost": 100,
-          "description": "Adventure in the Arabian desert"
-        }
-      ],
-      "routes": [
-        {
-          "id": 7,
-          "name": "Modern Dubai",
-          "path": "Burj Khalifa → Dubai Mall → Dubai Marina → JBR Beach → Return",
-          "duration": "8 hours",
-          "type": "Private Car Tour"
-        },
-        {
-          "id": 8,
-          "name": "Cultural Dubai",
-          "path": "Gold Souk → Spice Market → Dubai Creek → Al Fahidi District → Return",
-          "duration": "6 hours",
-          "type": "Walking Tour"
-        }
-      ],
-      "accommodations": {
-        "vegetarian": [
-          {
-            "id": 13,
-            "name": "Dubai Wellness Resort",
-            "rating": 4.6,
-            "pricePerNight": 175,
-            "amenities": ["Vegetarian Cuisine", "Spa", "Yoga Center"]
-          },
-          {
-            "id": 14,
-            "name": "Green Oasis Hotel",
-            "rating": 4.3,
-            "pricePerNight": 145,
-            "amenities": ["Plant-Based Menu", "Pool", "Free WiFi"]
-          }
-        ],
-        "nonVegetarian": [
-          {
-            "id": 15,
-            "name": "Burj Al Arab",
-            "rating": 5.0,
-            "pricePerNight": 500,
-            "amenities": ["Multiple Restaurants", "Private Beach", "Butler Service"]
-          },
-          {
-            "id": 16,
-            "name": "Dubai Luxury Palace",
-            "rating": 4.9,
-            "pricePerNight": 280,
-            "amenities": ["Fine Dining", "Spa", "Private Pool"]
-          }
-        ]
-      }
-    },
-    {
-      "id": 5,
-      "name": "Bali, Indonesia",
-      "country": "Indonesia",
-      "baseCost": 1200,
-      "nearbyPlaces": [
-        {
-          "id": 17,
-          "name": "Ubud Rice Terraces",
-          "cost": 30,
-          "description": "UNESCO heritage rice paddies"
-        },
-        {
-          "id": 18,
-          "name": "Tanah Lot Temple",
+          "id": 23,
+          "name": "Dudhsagar Falls",
           "cost": 25,
-          "description": "Ancient Hindu temple on a rock formation"
+          "description": "Four-tiered waterfall in the Bhagwan Mahaveer Sanctuary"
         },
         {
-          "id": 19,
-          "name": "Sacred Monkey Forest",
-          "cost": 20,
-          "description": "Nature reserve and Hindu temple complex"
-        },
-        {
-          "id": 20,
-          "name": "Mount Batur Sunrise Trek",
-          "cost": 90,
-          "description": "Active volcano with sunrise hiking tours"
+          "id": 24,
+          "name": "Basilica of Bom Jesus",
+          "cost": 2,
+          "description": "UNESCO World Heritage Site with St. Francis Xavier's remains"
         }
       ],
       "routes": [
         {
-          "id": 9,
-          "name": "Spiritual Bali",
-          "path": "Ubud Temple → Rice Terraces → Monkey Forest → Water Palace → Return",
-          "duration": "7 hours",
-          "type": "Private Driver"
+          "id": 11,
+          "name": "Beach Hopping Tour",
+          "path": "Calangute → Baga → Anjuna → Vagator → Chapora Fort → Return",
+          "duration": "6 hours",
+          "type": "Sco
+
+oter/Taxi"
         },
         {
-          "id": 10,
-          "name": "Beach & Culture",
-          "path": "Tanah Lot → Seminyak Beach → Uluwatu Temple → Sunset Kecak Dance",
-          "duration": "9 hours",
+          "id": 12,
+          "name": "Heritage Goa",
+          "path": "Basilica → Se Cathedral → Fontainhas → Aguada Fort → Sunset Cruise",
+          "duration": "7 hours",
           "type": "Guided Tour"
         }
       ],
       "accommodations": {
         "vegetarian": [
           {
-            "id": 17,
-            "name": "Ubud Wellness Retreat",
-            "rating": 4.8,
-            "pricePerNight": 100,
-            "amenities": ["Raw Vegan Cuisine", "Yoga Classes", "Spa"]
+            "id": 21,
+            "name": "Sattvic Goa Retreat",
+            "rating": 4.6,
+            "pricePerNight": 40,
+            "amenities": ["Pure Veg Meals", "Yoga", "Beach Access"]
           },
           {
-            "id": 18,
-            "name": "Bali Green Villa",
-            "rating": 4.5,
-            "pricePerNight": 80,
-            "amenities": ["Vegetarian Breakfast", "Pool", "Garden View"]
+            "id": 22,
+            "name": "Green Palm Resort",
+            "rating": 4.3,
+            "pricePerNight": 35,
+            "amenities": ["Veg Restaurant", "Pool", "Free WiFi"]
           }
         ],
         "nonVegetarian": [
           {
-            "id": 19,
-            "name": "Seminyak Beach Resort",
-            "rating": 4.7,
-            "pricePerNight": 120,
-            "amenities": ["Seafood Restaurant", "Beach Access", "Infinity Pool"]
+            "id": 23,
+            "name": "Beach Paradise Hotel",
+            "rating": 4.5,
+            "pricePerNight": 50,
+            "amenities": ["Seafood Restaurant", "Bar", "Beach View"]
           },
           {
-            "id": 20,
-            "name": "Bali Luxury Suites",
+            "id": 24,
+            "name": "Coastal Comfort Inn",
+            "rating": 4.4,
+            "pricePerNight": 45,
+            "amenities": ["Multi-Cuisine", "Pool", "Room Service"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "name": "Jaipur, Rajasthan",
+      "country": "India",
+      "type": "local",
+      "baseCost": 250,
+      "nearbyPlaces": [
+        {
+          "id": 25,
+          "name": "Amber Fort",
+          "cost": 5,
+          "description": "Magnificent hilltop fort with stunning architecture"
+        },
+        {
+          "id": 26,
+          "name": "Hawa Mahal",
+          "cost": 2,
+          "description": "Iconic Palace of Winds with 953 windows"
+        },
+        {
+          "id": 27,
+          "name": "City Palace",
+          "cost": 7,
+          "description": "Royal residence with museums and courtyards"
+        },
+        {
+          "id": 28,
+          "name": "Jantar Mantar",
+          "cost": 2,
+          "description": "UNESCO World Heritage astronomical observatory"
+        }
+      ],
+      "routes": [
+        {
+          "id": 13,
+          "name": "Pink City Heritage",
+          "path": "Amber Fort → Jal Mahal → Hawa Mahal → City Palace → Jantar Mantar",
+          "duration": "8 hours",
+          "type": "Car with Driver"
+        },
+        {
+          "id": 14,
+          "name": "Royal Rajasthan",
+          "path": "Nahargarh Fort → Jaigarh Fort → Puppet Show → Chokhi Dhani Village",
+          "duration": "6 hours",
+          "type": "Cultural Tour"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 25,
+            "name": "Rajasthani Heritage Stay",
+            "rating": 4.7,
+            "pricePerNight": 38,
+            "amenities": ["Traditional Veg Thali", "Cultural Shows", "Rooftop"]
+          },
+          {
+            "id": 26,
+            "name": "Pink City Comfort",
+            "rating": 4.4,
+            "pricePerNight": 30,
+            "amenities": ["Pure Veg", "WiFi", "Parking"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 27,
+            "name": "Royal Palace Hotel",
+            "rating": 4.8,
+            "pricePerNight": 55,
+            "amenities": ["Laal Maas Specialty", "Bar", "Heritage Property"]
+          },
+          {
+            "id": 28,
+            "name": "Jaipur Grand Inn",
+            "rating": 4.5,
+            "pricePerNight": 48,
+            "amenities": ["Multi-Cuisine", "Pool", "Travel Desk"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "name": "Manali, Himachal Pradesh",
+      "country": "India",
+      "type": "local",
+      "baseCost": 280,
+      "nearbyPlaces": [
+        {
+          "id": 29,
+          "name": "Rohtang Pass",
+          "cost": 20,
+          "description": "High mountain pass with snow and adventure activities"
+        },
+        {
+          "id": 30,
+          "name": "Solang Valley",
+          "cost": 15,
+          "description": "Adventure hub for paragliding and skiing"
+        },
+        {
+          "id": 31,
+          "name": "Hadimba Temple",
+          "cost": 1,
+          "description": "Ancient cave temple in cedar forest"
+        },
+        {
+          "id": 32,
+          "name": "Vashisht Hot Springs",
+          "cost": 2,
+          "description": "Natural hot water springs and temple"
+        }
+      ],
+      "routes": [
+        {
+          "id": 15,
+          "name": "Adventure Manali",
+          "path": "Solang Valley → Cable Car → Paragliding → River Rafting → Mall Road",
+          "duration": "7 hours",
+          "type": "Adventure Tour"
+        },
+        {
+          "id": 16,
+          "name": "Scenic Himachal",
+          "path": "Rohtang Pass → Keylong → Sissu → Return via Gulaba",
+          "duration": "9 hours",
+          "type": "Mountain Drive"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 29,
+            "name": "Mountain View Retreat",
+            "rating": 4.5,
+            "pricePerNight": 35,
+            "amenities": ["Veg Himachali Food", "Bonfire", "Valley View"]
+          },
+          {
+            "id": 30,
+            "name": "Himalayan Eco Lodge",
+            "rating": 4.3,
+            "pricePerNight": 32,
+            "amenities": ["Organic Veg Meals", "Trekking Guide", "WiFi"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 31,
+            "name": "Snow Peak Resort",
+            "rating": 4.7,
+            "pricePerNight": 45,
+            "amenities": ["Multi-Cuisine", "Bar", "Heated Rooms"]
+          },
+          {
+            "id": 32,
+            "name": "Alpine Comfort Hotel",
+            "rating": 4.4,
+            "pricePerNight": 40,
+            "amenities": ["Restaurant", "Room Heater", "Mountain View"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "name": "Kerala Backwaters",
+      "country": "India",
+      "type": "local",
+      "baseCost": 320,
+      "nearbyPlaces": [
+        {
+          "id": 33,
+          "name": "Alleppey Houseboat",
+          "cost": 80,
+          "description": "Traditional Kerala houseboat cruise through backwaters"
+        },
+        {
+          "id": 34,
+          "name": "Kumarakom Bird Sanctuary",
+          "cost": 2,
+          "description": "Bird watching paradise on Vembanad Lake"
+        },
+        {
+          "id": 35,
+          "name": "Munnar Tea Gardens",
+          "cost": 10,
+          "description": "Scenic tea plantations in hill station"
+        },
+        {
+          "id": 36,
+          "name": "Athirappilly Waterfalls",
+          "cost": 3,
+          "description": "Largest waterfall in Kerala, 'Niagara of India'"
+        }
+      ],
+      "routes": [
+        {
+          "id": 17,
+          "name": "Backwater Bliss",
+          "path": "Alleppey → Houseboat → Kumarakom → Vembanad Lake → Sunset View",
+          "duration": "8 hours",
+          "type": "Houseboat Cruise"
+        },
+        {
+          "id": 18,
+          "name": "Hill Station & Spice",
+          "path": "Munnar → Tea Museum → Eravikulam Park → Spice Plantation → Return",
+          "duration": "7 hours",
+          "type": "Guided Tour"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 33,
+            "name": "Kerala Ayurveda Resort",
+            "rating": 4.8,
+            "pricePerNight": 42,
+            "amenities": ["Sattvic Food", "Ayurveda Spa", "Yoga"]
+          },
+          {
+            "id": 34,
+            "name": "Backwater Green Stay",
+            "rating": 4.5,
+            "pricePerNight": 38,
+            "amenities": ["Veg Kerala Meals", "Boat Ride", "Garden"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 35,
+            "name": "Lakeview Heritage Hotel",
+            "rating": 4.7,
+            "pricePerNight": 52,
+            "amenities": ["Fresh Seafood", "Lake View", "Traditional Decor"]
+          },
+          {
+            "id": 36,
+            "name": "Coconut Lagoon Resort",
             "rating": 4.6,
-            "pricePerNight": 110,
-            "amenities": ["Multiple Restaurants", "Spa", "Ocean View"]
+            "pricePerNight": 48,
+            "amenities": ["Kerala Cuisine", "Spa", "Pool"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "name": "Agra, Uttar Pradesh",
+      "country": "India",
+      "type": "local",
+      "baseCost": 220,
+      "nearbyPlaces": [
+        {
+          "id": 37,
+          "name": "Taj Mahal",
+          "cost": 10,
+          "description": "World Wonder and symbol of eternal love"
+        },
+        {
+          "id": 38,
+          "name": "Agra Fort",
+          "cost": 5,
+          "description": "UNESCO World Heritage red sandstone fort"
+        },
+        {
+          "id": 39,
+          "name": "Fatehpur Sikri",
+          "cost": 5,
+          "description": "Mughal architectural complex and ghost city"
+        },
+        {
+          "id": 40,
+          "name": "Mehtab Bagh",
+          "cost": 2,
+          "description": "Moonlight garden with Taj Mahal sunset views"
+        }
+      ],
+      "routes": [
+        {
+          "id": 19,
+          "name": "Mughal Heritage",
+          "path": "Taj Mahal Sunrise → Agra Fort → Itmad-ud-Daulah → Mehtab Bagh Sunset",
+          "duration": "8 hours",
+          "type": "Guided Tour"
+        },
+        {
+          "id": 20,
+          "name": "Extended Agra",
+          "path": "Taj Mahal → Agra Fort → Fatehpur Sikri → Local Bazaar → Return",
+          "duration": "9 hours",
+          "type": "Car with Guide"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 37,
+            "name": "Taj View Vegetarian Hotel",
+            "rating": 4.4,
+            "pricePerNight": 28,
+            "amenities": ["Pure Veg", "Taj View Rooftop", "WiFi"]
+          },
+          {
+            "id": 38,
+            "name": "Heritage Veg Inn",
+            "rating": 4.2,
+            "pricePerNight": 25,
+            "amenities": ["North Indian Veg", "Travel Desk", "Parking"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 39,
+            "name": "Mughal Palace Hotel",
+            "rating": 4.6,
+            "pricePerNight": 42,
+            "amenities": ["Mughlai Cuisine", "Bar", "Taj View"]
+          },
+          {
+            "id": 40,
+            "name": "Agra Grand Resort",
+            "rating": 4.5,
+            "pricePerNight": 38,
+            "amenities": ["Multi-Cuisine", "Pool", "Spa"]
           }
         ]
       }

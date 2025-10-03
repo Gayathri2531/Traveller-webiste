@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { CurrencyProvider } from './context/CurrencyContext'
 import Login from './pages/Login'
 import TripPlanner from './pages/TripPlanner'
 import TripSuggestions from './pages/TripSuggestions'
@@ -13,9 +14,10 @@ function App() {
   const [selectedNonVegAccommodation, setSelectedNonVegAccommodation] = useState(null)
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <Routes>
+    <CurrencyProvider>
+      <Router>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+          <Routes>
           <Route 
             path="/login" 
             element={
@@ -62,9 +64,10 @@ function App() {
             } 
           />
           <Route path="/" element={<Navigate to="/login" />} />
-        </Routes>
-      </div>
-    </Router>
+          </Routes>
+        </div>
+      </Router>
+    </CurrencyProvider>
   )
 }
 

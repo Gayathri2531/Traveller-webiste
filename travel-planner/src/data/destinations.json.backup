@@ -1,0 +1,415 @@
+{
+  "destinations": [
+    {
+      "id": 1,
+      "name": "Paris, France",
+      "country": "France",
+      "type": "international",
+      "baseCost": 1500,
+      "nearbyPlaces": [
+        {
+          "id": 1,
+          "name": "Eiffel Tower",
+          "cost": 50,
+          "description": "Iconic iron lattice tower on the Champ de Mars"
+        },
+        {
+          "id": 2,
+          "name": "Louvre Museum",
+          "cost": 75,
+          "description": "World's largest art museum and historic monument"
+        },
+        {
+          "id": 3,
+          "name": "Notre-Dame Cathedral",
+          "cost": 30,
+          "description": "Medieval Catholic cathedral with Gothic architecture"
+        },
+        {
+          "id": 4,
+          "name": "Versailles Palace",
+          "cost": 100,
+          "description": "Former royal residence with stunning gardens"
+        }
+      ],
+      "routes": [
+        {
+          "id": 1,
+          "name": "Classic Paris Tour",
+          "path": "Airport → Hotel → Eiffel Tower → Seine River → Louvre → Return",
+          "duration": "8 hours",
+          "type": "Bus Tour"
+        },
+        {
+          "id": 2,
+          "name": "Historical Paris",
+          "path": "Notre-Dame → Latin Quarter → Pantheon → Luxembourg Gardens → Return",
+          "duration": "6 hours",
+          "type": "Walking Tour"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 1,
+            "name": "Le Veggie Hotel Paris",
+            "rating": 4.5,
+            "pricePerNight": 120,
+            "amenities": ["Free WiFi", "Vegan Restaurant", "Spa"]
+          },
+          {
+            "id": 2,
+            "name": "Green Garden Suites",
+            "rating": 4.2,
+            "pricePerNight": 95,
+            "amenities": ["Vegetarian Breakfast", "Gym", "Pool"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 3,
+            "name": "Grand Paris Hotel",
+            "rating": 4.8,
+            "pricePerNight": 150,
+            "amenities": ["Fine Dining", "Bar", "Concierge"]
+          },
+          {
+            "id": 4,
+            "name": "Riverside Resort",
+            "rating": 4.6,
+            "pricePerNight": 130,
+            "amenities": ["Restaurant", "River View", "Room Service"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "Tokyo, Japan",
+      "country": "Japan",
+      "baseCost": 2000,
+      "nearbyPlaces": [
+        {
+          "id": 5,
+          "name": "Senso-ji Temple",
+          "cost": 20,
+          "description": "Ancient Buddhist temple in Asakusa"
+        },
+        {
+          "id": 6,
+          "name": "Tokyo Skytree",
+          "cost": 60,
+          "description": "Tallest tower in Japan with observation decks"
+        },
+        {
+          "id": 7,
+          "name": "Shibuya Crossing",
+          "cost": 0,
+          "description": "World's busiest pedestrian crossing"
+        },
+        {
+          "id": 8,
+          "name": "Mount Fuji Day Trip",
+          "cost": 150,
+          "description": "Visit Japan's iconic mountain"
+        }
+      ],
+      "routes": [
+        {
+          "id": 3,
+          "name": "Tokyo Highlights",
+          "path": "Shibuya → Harajuku → Meiji Shrine → Shinjuku → Return",
+          "duration": "7 hours",
+          "type": "Metro Tour"
+        },
+        {
+          "id": 4,
+          "name": "Traditional Tokyo",
+          "path": "Senso-ji → Ueno Park → Imperial Palace → Ginza → Return",
+          "duration": "8 hours",
+          "type": "Guided Tour"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 5,
+            "name": "Zen Garden Hotel",
+            "rating": 4.7,
+            "pricePerNight": 140,
+            "amenities": ["Buddhist Vegetarian Cuisine", "Meditation Room", "Garden"]
+          },
+          {
+            "id": 6,
+            "name": "Tokyo Green Inn",
+            "rating": 4.3,
+            "pricePerNight": 110,
+            "amenities": ["Vegetarian Breakfast", "Onsen", "Free WiFi"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 7,
+            "name": "Tokyo Grand Palace",
+            "rating": 4.9,
+            "pricePerNight": 180,
+            "amenities": ["Sushi Restaurant", "Rooftop Bar", "Spa"]
+          },
+          {
+            "id": 8,
+            "name": "Shinjuku Luxury Suites",
+            "rating": 4.7,
+            "pricePerNight": 160,
+            "amenities": ["Multiple Restaurants", "City View", "Gym"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name": "New York, USA",
+      "country": "USA",
+      "baseCost": 1800,
+      "nearbyPlaces": [
+        {
+          "id": 9,
+          "name": "Statue of Liberty",
+          "cost": 80,
+          "description": "Iconic symbol of freedom and democracy"
+        },
+        {
+          "id": 10,
+          "name": "Central Park",
+          "cost": 0,
+          "description": "Urban park in Manhattan with lakes and gardens"
+        },
+        {
+          "id": 11,
+          "name": "Empire State Building",
+          "cost": 70,
+          "description": "Art Deco skyscraper with observation deck"
+        },
+        {
+          "id": 12,
+          "name": "Times Square",
+          "cost": 0,
+          "description": "Major commercial intersection and entertainment center"
+        }
+      ],
+      "routes": [
+        {
+          "id": 5,
+          "name": "Manhattan Explorer",
+          "path": "Times Square → Central Park → MET Museum → Fifth Avenue → Return",
+          "duration": "9 hours",
+          "type": "Walking & Subway"
+        },
+        {
+          "id": 6,
+          "name": "NYC Icons",
+          "path": "Statue of Liberty → Wall Street → Brooklyn Bridge → Empire State Building",
+          "duration": "10 hours",
+          "type": "Guided Bus Tour"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 9,
+            "name": "Green Apple Hotel NYC",
+            "rating": 4.4,
+            "pricePerNight": 160,
+            "amenities": ["Vegan Restaurant", "Eco-Friendly", "Rooftop Garden"]
+          },
+          {
+            "id": 10,
+            "name": "Manhattan Veggie Suites",
+            "rating": 4.1,
+            "pricePerNight": 135,
+            "amenities": ["Vegetarian Cafe", "Free Breakfast", "WiFi"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 11,
+            "name": "Times Square Grand Hotel",
+            "rating": 4.8,
+            "pricePerNight": 200,
+            "amenities": ["Fine Dining", "Broadway Tickets", "Concierge"]
+          },
+          {
+            "id": 12,
+            "name": "Manhattan Elite Towers",
+            "rating": 4.7,
+            "pricePerNight": 185,
+            "amenities": ["Steakhouse", "Bar", "Spa & Gym"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "name": "Dubai, UAE",
+      "country": "UAE",
+      "baseCost": 2200,
+      "nearbyPlaces": [
+        {
+          "id": 13,
+          "name": "Burj Khalifa",
+          "cost": 120,
+          "description": "World's tallest building with observation deck"
+        },
+        {
+          "id": 14,
+          "name": "Dubai Mall",
+          "cost": 50,
+          "description": "Largest shopping mall with aquarium"
+        },
+        {
+          "id": 15,
+          "name": "Palm Jumeirah",
+          "cost": 80,
+          "description": "Artificial archipelago with luxury resorts"
+        },
+        {
+          "id": 16,
+          "name": "Desert Safari",
+          "cost": 100,
+          "description": "Adventure in the Arabian desert"
+        }
+      ],
+      "routes": [
+        {
+          "id": 7,
+          "name": "Modern Dubai",
+          "path": "Burj Khalifa → Dubai Mall → Dubai Marina → JBR Beach → Return",
+          "duration": "8 hours",
+          "type": "Private Car Tour"
+        },
+        {
+          "id": 8,
+          "name": "Cultural Dubai",
+          "path": "Gold Souk → Spice Market → Dubai Creek → Al Fahidi District → Return",
+          "duration": "6 hours",
+          "type": "Walking Tour"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 13,
+            "name": "Dubai Wellness Resort",
+            "rating": 4.6,
+            "pricePerNight": 175,
+            "amenities": ["Vegetarian Cuisine", "Spa", "Yoga Center"]
+          },
+          {
+            "id": 14,
+            "name": "Green Oasis Hotel",
+            "rating": 4.3,
+            "pricePerNight": 145,
+            "amenities": ["Plant-Based Menu", "Pool", "Free WiFi"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 15,
+            "name": "Burj Al Arab",
+            "rating": 5.0,
+            "pricePerNight": 500,
+            "amenities": ["Multiple Restaurants", "Private Beach", "Butler Service"]
+          },
+          {
+            "id": 16,
+            "name": "Dubai Luxury Palace",
+            "rating": 4.9,
+            "pricePerNight": 280,
+            "amenities": ["Fine Dining", "Spa", "Private Pool"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "name": "Bali, Indonesia",
+      "country": "Indonesia",
+      "baseCost": 1200,
+      "nearbyPlaces": [
+        {
+          "id": 17,
+          "name": "Ubud Rice Terraces",
+          "cost": 30,
+          "description": "UNESCO heritage rice paddies"
+        },
+        {
+          "id": 18,
+          "name": "Tanah Lot Temple",
+          "cost": 25,
+          "description": "Ancient Hindu temple on a rock formation"
+        },
+        {
+          "id": 19,
+          "name": "Sacred Monkey Forest",
+          "cost": 20,
+          "description": "Nature reserve and Hindu temple complex"
+        },
+        {
+          "id": 20,
+          "name": "Mount Batur Sunrise Trek",
+          "cost": 90,
+          "description": "Active volcano with sunrise hiking tours"
+        }
+      ],
+      "routes": [
+        {
+          "id": 9,
+          "name": "Spiritual Bali",
+          "path": "Ubud Temple → Rice Terraces → Monkey Forest → Water Palace → Return",
+          "duration": "7 hours",
+          "type": "Private Driver"
+        },
+        {
+          "id": 10,
+          "name": "Beach & Culture",
+          "path": "Tanah Lot → Seminyak Beach → Uluwatu Temple → Sunset Kecak Dance",
+          "duration": "9 hours",
+          "type": "Guided Tour"
+        }
+      ],
+      "accommodations": {
+        "vegetarian": [
+          {
+            "id": 17,
+            "name": "Ubud Wellness Retreat",
+            "rating": 4.8,
+            "pricePerNight": 100,
+            "amenities": ["Raw Vegan Cuisine", "Yoga Classes", "Spa"]
+          },
+          {
+            "id": 18,
+            "name": "Bali Green Villa",
+            "rating": 4.5,
+            "pricePerNight": 80,
+            "amenities": ["Vegetarian Breakfast", "Pool", "Garden View"]
+          }
+        ],
+        "nonVegetarian": [
+          {
+            "id": 19,
+            "name": "Seminyak Beach Resort",
+            "rating": 4.7,
+            "pricePerNight": 120,
+            "amenities": ["Seafood Restaurant", "Beach Access", "Infinity Pool"]
+          },
+          {
+            "id": 20,
+            "name": "Bali Luxury Suites",
+            "rating": 4.6,
+            "pricePerNight": 110,
+            "amenities": ["Multiple Restaurants", "Spa", "Ocean View"]
+          }
+        ]
+      }
+    }
+  ]
+}

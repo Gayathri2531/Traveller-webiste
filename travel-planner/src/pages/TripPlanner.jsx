@@ -1,14 +1,23 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useCurrency } from '../context/CurrencyContext'
+import CurrencyToggle from '../components/CurrencyToggle'
 import destinationsData from '../data/destinations.json'
 
 function TripPlanner({ setTripData }) {
   const navigate = useNavigate()
+  const { convertPrice, formatPrice } = useCurrency()
+  const [locationType, setLocationType] = useState('all') // 'all', 'local', 'international'
   const [formData, setFormData] = useState({
     destination: '',
     vegetarianCount: 0,
     nonVegetarianCount: 0,
     budget: 1000
+  })
+
+  const filteredDestinations = destinationsData.destinations.filter(dest => {
+    if (locationType === 'all') return true
+    return dest.type === locationType
   })
 
   const handleSubmit = (e) => {
@@ -63,6 +72,20 @@ function TripPlanner({ setTripData }) {
   return (
     <div className="min-h-screen py-12 px-4">
       <div className="max-w-4xl mx-auto">
+        {/* Header with Back Button and Currency Toggle */}
+        <div className="flex justify-between items-center mb-8">
+          <button
+            onClick={() => navigate('/login')}
+            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-100 transition duration-200 shadow-md"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span className="font-medium">Back to Login</span>
+          </button>
+          <CurrencyToggle />
+        </div>
+
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-5xl font-bold text-gray-800 mb-4">Plan Your Dream Trip</h1>
@@ -83,6 +106,48 @@ function TripPlanner({ setTripData }) {
 
           {/* Form Content */}
           <form onSubmit={handleSubmit} className="p-8 space-y-8">
+            {/* Location Type Selection */}
+            <div>
+              <label className="block text-lg font-semibold text-gray-800 mb-3">
+                Choose Location Type
+              </label>
+              <div className="grid grid-cols-3 gap-4">
+                <button
+                  type="button"
+                  onClick={() => setLocationType('all')}
+                  className={`py-4 px-6 rounded-xl font-semibold transition duration-200 ${
+                    locationType === 'all'
+                      ? 'bg-indigo-600 text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  🌍 All Destinations
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLocationType('local')}
+                  className={`py-4 px-6 rounded-xl font-semibold transition duration-200 ${
+                    locationType === 'local'
+                      ? 'bg-orange-600 text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  🇮🇳 Local (India)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLocationType('international')}
+                  className={`py-4 px-6 rounded-xl font-semibold transition duration-200 ${
+                    locationType === 'international'
+                      ? 'bg-blue-600 text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  ✈️ International
+                </button>
+              </div>
+            </div>
+
             {/* Destination Selection */}
             <div>
               <label htmlFor="destination" className="block text-lg font-semibold text-gray-800 mb-3">
@@ -97,12 +162,15 @@ function TripPlanner({ setTripData }) {
                 required
               >
                 <option value="">Select your destination</option>
-                {destinationsData.destinations.map(dest => (
+                {filteredDestinations.map(dest => (
                   <option key={dest.id} value={dest.id}>
-                    {dest.name} - Starting from ${dest.baseCost}
+                    {dest.name} - Starting from {formatPrice(dest.baseCost)}
                   </option>
                 ))}
               </select>
+              <p className="mt-2 text-sm text-gray-500">
+                Showing {filteredDestinations.length} {locationType === 'all' ? 'all' : locationType} destination(s)
+              </p>
             </div>
 
             {/* Number of Travelers by Food Preference */}
@@ -179,7 +247,7 @@ function TripPlanner({ setTripData }) {
             {/* Budget */}
             <div>
               <label htmlFor="budget" className="block text-lg font-semibold text-gray-800 mb-3">
-                Your Budget (USD)
+                Your Budget (in USD - will convert to selected currency)
               </label>
               <div className="relative">
                 <span className="absolute left-6 top-1/2 transform -translate-y-1/2 text-xl font-bold text-gray-600">$</span>
@@ -208,6 +276,11 @@ function TripPlanner({ setTripData }) {
               <div className="flex justify-between text-sm text-gray-500 mt-1">
                 <span>$500</span>
                 <span>$10,000+</span>
+              </div>
+              <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-sm text-blue-800">
+                  <strong>In your selected currency:</strong> {formatPrice(formData.budget)}
+                </p>
               </div>
             </div>
 

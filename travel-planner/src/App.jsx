@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { CurrencyProvider } from './context/CurrencyContext'
+import TravelBackground from './components/TravelBackground'
 import Login from './pages/Login'
 import TripPlanner from './pages/TripPlanner'
 import TripSuggestions from './pages/TripSuggestions'
@@ -16,7 +17,8 @@ function App() {
   return (
     <CurrencyProvider>
       <Router>
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="min-h-screen relative">
+          <TravelBackground />
           <Routes>
           <Route 
             path="/login" 

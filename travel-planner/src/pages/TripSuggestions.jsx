@@ -197,7 +197,7 @@ function TripSuggestions({
                 <div className="mt-6 bg-green-50 border-2 border-green-200 rounded-xl p-4">
                   <p className="text-green-800 font-semibold">
                     ✓ {selectedNearbyPlaces.length} place{selectedNearbyPlaces.length !== 1 ? 's' : ''} selected 
-                    (Additional cost: ${totalNearbyPlacesCost * numberOfPeople})
+                    (Additional cost: {formatPrice(totalNearbyPlacesCost * totalPeople)})
                   </p>
                 </div>
               )}
@@ -290,11 +290,11 @@ function TripSuggestions({
                           
                           <div className="mb-4">
                             <div className="text-3xl font-bold text-green-600 mb-1">
-                              ${acc.pricePerNight}
+                              {formatPrice(acc.pricePerNight)}
                               <span className="text-sm text-gray-500 font-normal"> / night</span>
                             </div>
                             <p className="text-sm text-gray-600">
-                              Total for 3 nights: ${acc.pricePerNight * 3 * vegetarianCount}
+                              Total for 3 nights: {formatPrice(acc.pricePerNight * 3 * vegetarianCount)}
                             </p>
                           </div>
 
@@ -319,7 +319,7 @@ function TripSuggestions({
                     <div className="mt-4 bg-green-50 border-2 border-green-200 rounded-xl p-4">
                       <p className="text-green-800 font-semibold">
                         ✓ {selectedVegAccommodation.name} selected for vegetarians
-                        (${selectedVegAccommodation.pricePerNight * 3 * vegetarianCount} for 3 nights)
+                        ({formatPrice(selectedVegAccommodation.pricePerNight * 3 * vegetarianCount)} for 3 nights)
                       </p>
                     </div>
                   )}
@@ -364,11 +364,11 @@ function TripSuggestions({
                           
                           <div className="mb-4">
                             <div className="text-3xl font-bold text-red-600 mb-1">
-                              ${acc.pricePerNight}
+                              {formatPrice(acc.pricePerNight)}
                               <span className="text-sm text-gray-500 font-normal"> / night</span>
                             </div>
                             <p className="text-sm text-gray-600">
-                              Total for 3 nights: ${acc.pricePerNight * 3 * nonVegetarianCount}
+                              Total for 3 nights: {formatPrice(acc.pricePerNight * 3 * nonVegetarianCount)}
                             </p>
                           </div>
 
@@ -393,7 +393,7 @@ function TripSuggestions({
                     <div className="mt-4 bg-red-50 border-2 border-red-200 rounded-xl p-4">
                       <p className="text-red-800 font-semibold">
                         ✓ {selectedNonVegAccommodation.name} selected for non-vegetarians
-                        (${selectedNonVegAccommodation.pricePerNight * 3 * nonVegetarianCount} for 3 nights)
+                        ({formatPrice(selectedNonVegAccommodation.pricePerNight * 3 * nonVegetarianCount)} for 3 nights)
                       </p>
                     </div>
                   )}

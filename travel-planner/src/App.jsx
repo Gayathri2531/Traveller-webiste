@@ -9,7 +9,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [tripData, setTripData] = useState(null)
   const [selectedNearbyPlaces, setSelectedNearbyPlaces] = useState([])
-  const [selectedAccommodation, setSelectedAccommodation] = useState(null)
+  const [selectedVegAccommodation, setSelectedVegAccommodation] = useState(null)
+  const [selectedNonVegAccommodation, setSelectedNonVegAccommodation] = useState(null)
 
   return (
     <Router>
@@ -40,8 +41,10 @@ function App() {
                 tripData={tripData} 
                 selectedNearbyPlaces={selectedNearbyPlaces}
                 setSelectedNearbyPlaces={setSelectedNearbyPlaces}
-                selectedAccommodation={selectedAccommodation}
-                setSelectedAccommodation={setSelectedAccommodation}
+                selectedVegAccommodation={selectedVegAccommodation}
+                setSelectedVegAccommodation={setSelectedVegAccommodation}
+                selectedNonVegAccommodation={selectedNonVegAccommodation}
+                setSelectedNonVegAccommodation={setSelectedNonVegAccommodation}
               />
             } 
           />
@@ -53,7 +56,8 @@ function App() {
               <TripSummary 
                 tripData={tripData}
                 selectedNearbyPlaces={selectedNearbyPlaces}
-                selectedAccommodation={selectedAccommodation}
+                selectedVegAccommodation={selectedVegAccommodation}
+                selectedNonVegAccommodation={selectedNonVegAccommodation}
               />
             } 
           />

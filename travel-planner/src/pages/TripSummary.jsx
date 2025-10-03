@@ -1,18 +1,27 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) {
+function TripSummary({ tripData, selectedNearbyPlaces, selectedVegAccommodation, selectedNonVegAccommodation }) {
   const navigate = useNavigate()
 
   if (!tripData) {
     return null
   }
 
-  const { destination, numberOfPeople, budget, totalPrice, foodPreference } = tripData
+  const { destination, vegetarianCount, nonVegetarianCount, totalPeople, budget, totalPrice } = tripData
 
   const totalNearbyPlacesCost = selectedNearbyPlaces.reduce((sum, place) => sum + place.cost, 0)
-  const accommodationCost = selectedAccommodation ? selectedAccommodation.pricePerNight * 3 * numberOfPeople : 0
-  const grandTotal = totalPrice + (totalNearbyPlacesCost * numberOfPeople) + accommodationCost
+  
+  const vegAccommodationCost = selectedVegAccommodation && vegetarianCount > 0
+    ? selectedVegAccommodation.pricePerNight * 3 * vegetarianCount 
+    : 0
+  
+  const nonVegAccommodationCost = selectedNonVegAccommodation && nonVegetarianCount > 0
+    ? selectedNonVegAccommodation.pricePerNight * 3 * nonVegetarianCount 
+    : 0
+  
+  const totalAccommodationCost = vegAccommodationCost + nonVegAccommodationCost
+  const grandTotal = totalPrice + (totalNearbyPlacesCost * totalPeople) + totalAccommodationCost
 
   const handleNewTrip = () => {
     navigate('/planner')
@@ -58,8 +67,12 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="bg-blue-50 rounded-xl p-6">
                 <div className="text-3xl mb-3">👥</div>
-                <div className="text-sm text-gray-600 mb-1">Number of Travelers</div>
-                <div className="text-2xl font-bold text-gray-800">{numberOfPeople}</div>
+                <div className="text-sm text-gray-600 mb-1">Total Travelers</div>
+                <div className="text-2xl font-bold text-gray-800">{totalPeople}</div>
+                <div className="mt-2 text-sm text-gray-700">
+                  {vegetarianCount > 0 && <div>🥗 {vegetarianCount} Vegetarian</div>}
+                  {nonVegetarianCount > 0 && <div>🍖 {nonVegetarianCount} Non-Vegetarian</div>}
+                </div>
               </div>
               <div className="bg-green-50 rounded-xl p-6">
                 <div className="text-3xl mb-3">💰</div>
@@ -67,9 +80,18 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
                 <div className="text-2xl font-bold text-gray-800">${budget.toLocaleString()}</div>
               </div>
               <div className="bg-purple-50 rounded-xl p-6">
-                <div className="text-3xl mb-3">{foodPreference === 'vegetarian' ? '🥗' : '🍖'}</div>
-                <div className="text-sm text-gray-600 mb-1">Food Preference</div>
-                <div className="text-2xl font-bold text-gray-800 capitalize">{foodPreference}</div>
+                <div className="text-3xl mb-3">🏨</div>
+                <div className="text-sm text-gray-600 mb-1">Accommodations</div>
+                <div className="text-sm font-bold text-gray-800">
+                  {(selectedVegAccommodation || selectedNonVegAccommodation) ? (
+                    <>
+                      {selectedVegAccommodation && <div className="mb-1">✓ Veg Hotel</div>}
+                      {selectedNonVegAccommodation && <div>✓ Non-Veg Hotel</div>}
+                    </>
+                  ) : (
+                    'None Selected'
+                  )}
+                </div>
               </div>
             </div>
 
@@ -116,14 +138,14 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
                         <p className="text-sm text-gray-600">{place.description}</p>
                       </div>
                       <div className="text-right ml-4">
-                        <p className="font-bold text-green-600">${place.cost * numberOfPeople}</p>
-                        <p className="text-xs text-gray-500">${place.cost} × {numberOfPeople}</p>
+                        <p className="font-bold text-green-600">${place.cost * totalPeople}</p>
+                        <p className="text-xs text-gray-500">${place.cost} × {totalPeople}</p>
                       </div>
                     </div>
                   ))}
                   <div className="bg-green-100 rounded-xl p-4 flex justify-between items-center font-semibold">
                     <span className="text-gray-800">Attractions Subtotal</span>
-                    <span className="text-green-700 text-lg">${totalNearbyPlacesCost * numberOfPeople}</span>
+                    <span className="text-green-700 text-lg">${totalNearbyPlacesCost * totalPeople}</span>
                   </div>
                 </div>
               </div>

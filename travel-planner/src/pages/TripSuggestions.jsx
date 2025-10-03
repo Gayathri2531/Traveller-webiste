@@ -5,8 +5,10 @@ function TripSuggestions({
   tripData, 
   selectedNearbyPlaces, 
   setSelectedNearbyPlaces,
-  selectedAccommodation,
-  setSelectedAccommodation
+  selectedVegAccommodation,
+  setSelectedVegAccommodation,
+  selectedNonVegAccommodation,
+  setSelectedNonVegAccommodation
 }) {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('places')
@@ -15,7 +17,7 @@ function TripSuggestions({
     return null
   }
 
-  const { destination, numberOfPeople, budget, totalPrice, foodPreference } = tripData
+  const { destination, vegetarianCount, nonVegetarianCount, totalPeople, budget, totalPrice } = tripData
 
   const toggleNearbyPlace = (place) => {
     setSelectedNearbyPlaces(prev => {
@@ -28,8 +30,12 @@ function TripSuggestions({
     })
   }
 
-  const selectAccommodation = (accommodation) => {
-    setSelectedAccommodation(accommodation)
+  const selectVegAccommodation = (accommodation) => {
+    setSelectedVegAccommodation(accommodation)
+  }
+
+  const selectNonVegAccommodation = (accommodation) => {
+    setSelectedNonVegAccommodation(accommodation)
   }
 
   const handleContinue = () => {
@@ -40,13 +46,18 @@ function TripSuggestions({
     return selectedNearbyPlaces.some(p => p.id === placeId)
   }
 
-  const accommodations = foodPreference === 'vegetarian' 
-    ? destination.accommodations.vegetarian 
-    : destination.accommodations.nonVegetarian
-
   const totalNearbyPlacesCost = selectedNearbyPlaces.reduce((sum, place) => sum + place.cost, 0)
-  const estimatedTotalCost = totalPrice + (totalNearbyPlacesCost * numberOfPeople) + 
-    (selectedAccommodation ? selectedAccommodation.pricePerNight * 3 * numberOfPeople : 0)
+  
+  const vegAccommodationCost = selectedVegAccommodation && vegetarianCount > 0
+    ? selectedVegAccommodation.pricePerNight * 3 * vegetarianCount 
+    : 0
+  
+  const nonVegAccommodationCost = selectedNonVegAccommodation && nonVegetarianCount > 0
+    ? selectedNonVegAccommodation.pricePerNight * 3 * nonVegetarianCount 
+    : 0
+  
+  const estimatedTotalCost = totalPrice + (totalNearbyPlacesCost * totalPeople) + 
+    vegAccommodationCost + nonVegAccommodationCost
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -68,7 +79,14 @@ function TripSuggestions({
             <div className="text-center">
               <div className="text-3xl mb-2">👥</div>
               <div className="text-sm opacity-90">Travelers</div>
-              <div className="text-lg font-bold">{numberOfPeople} {numberOfPeople === 1 ? 'Person' : 'People'}</div>
+              <div className="text-lg font-bold">{totalPeople} {totalPeople === 1 ? 'Person' : 'People'}</div>
+              {(vegetarianCount > 0 || nonVegetarianCount > 0) && (
+                <div className="text-xs opacity-80 mt-1">
+                  {vegetarianCount > 0 && `🥗 ${vegetarianCount}`}
+                  {vegetarianCount > 0 && nonVegetarianCount > 0 && ' • '}
+                  {nonVegetarianCount > 0 && `🍖 ${nonVegetarianCount}`}
+                </div>
+              )}
             </div>
             <div className="text-center">
               <div className="text-3xl mb-2">💰</div>
@@ -213,73 +231,155 @@ function TripSuggestions({
           {activeTab === 'accommodation' && (
             <div>
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                  {foodPreference === 'vegetarian' ? 'Vegetarian' : 'Non-Vegetarian'} Accommodation Options
-                </h2>
-                <p className="text-gray-600">Choose your perfect place to stay</p>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Accommodation Options</h2>
+                <p className="text-gray-600">Choose accommodations for your travelers</p>
               </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                {accommodations.map(acc => (
-                  <div
-                    key={acc.id}
-                    onClick={() => selectAccommodation(acc)}
-                    className={`bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition duration-200 hover:scale-105 ${
-                      selectedAccommodation?.id === acc.id ? 'ring-4 ring-indigo-500' : ''
-                    }`}
-                  >
-                    <div className={`h-3 ${selectedAccommodation?.id === acc.id ? 'bg-indigo-500' : 'bg-gradient-to-r from-teal-500 to-blue-500'}`}></div>
-                    <div className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-800 mb-2">{acc.name}</h3>
-                          <div className="flex items-center">
-                            <span className="text-yellow-500 mr-1">⭐</span>
-                            <span className="font-semibold text-gray-700">{acc.rating}</span>
-                            <span className="text-gray-500 text-sm ml-1">/ 5.0</span>
-                          </div>
-                        </div>
-                        {selectedAccommodation?.id === acc.id && (
-                          <div className="bg-indigo-500 text-white rounded-full p-2">
-                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                          </div>
-                        )}
-                      </div>
-                      
-                      <div className="mb-4">
-                        <div className="text-3xl font-bold text-indigo-600 mb-1">
-                          ${acc.pricePerNight}
-                          <span className="text-sm text-gray-500 font-normal"> / night</span>
-                        </div>
-                        <p className="text-sm text-gray-600">
-                          Total for 3 nights: ${acc.pricePerNight * 3 * numberOfPeople}
-                        </p>
-                      </div>
 
-                      <div className="border-t pt-4">
-                        <p className="text-sm font-semibold text-gray-700 mb-2">Amenities:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {acc.amenities.map((amenity, index) => (
-                            <span
-                              key={index}
-                              className="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full"
-                            >
-                              {amenity}
-                            </span>
-                          ))}
+              {/* Vegetarian Accommodations */}
+              {vegetarianCount > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-xl font-bold text-green-700 mb-4 flex items-center">
+                    <span className="text-2xl mr-2">🥗</span>
+                    Vegetarian Accommodations ({vegetarianCount} {vegetarianCount === 1 ? 'traveler' : 'travelers'})
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {destination.accommodations.vegetarian.map(acc => (
+                      <div
+                        key={acc.id}
+                        onClick={() => selectVegAccommodation(acc)}
+                        className={`bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition duration-200 hover:scale-105 ${
+                          selectedVegAccommodation?.id === acc.id ? 'ring-4 ring-green-500' : ''
+                        }`}
+                      >
+                        <div className={`h-3 ${selectedVegAccommodation?.id === acc.id ? 'bg-green-500' : 'bg-gradient-to-r from-green-400 to-emerald-500'}`}></div>
+                        <div className="p-6">
+                          <div className="flex justify-between items-start mb-4">
+                            <div>
+                              <h3 className="text-xl font-bold text-gray-800 mb-2">{acc.name}</h3>
+                              <div className="flex items-center">
+                                <span className="text-yellow-500 mr-1">⭐</span>
+                                <span className="font-semibold text-gray-700">{acc.rating}</span>
+                                <span className="text-gray-500 text-sm ml-1">/ 5.0</span>
+                              </div>
+                            </div>
+                            {selectedVegAccommodation?.id === acc.id && (
+                              <div className="bg-green-500 text-white rounded-full p-2">
+                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="mb-4">
+                            <div className="text-3xl font-bold text-green-600 mb-1">
+                              ${acc.pricePerNight}
+                              <span className="text-sm text-gray-500 font-normal"> / night</span>
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              Total for 3 nights: ${acc.pricePerNight * 3 * vegetarianCount}
+                            </p>
+                          </div>
+
+                          <div className="border-t pt-4">
+                            <p className="text-sm font-semibold text-gray-700 mb-2">Amenities:</p>
+                            <div className="flex flex-wrap gap-2">
+                              {acc.amenities.map((amenity, index) => (
+                                <span
+                                  key={index}
+                                  className="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full"
+                                >
+                                  {amenity}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              {selectedAccommodation && (
-                <div className="mt-6 bg-indigo-50 border-2 border-indigo-200 rounded-xl p-4">
-                  <p className="text-indigo-800 font-semibold">
-                    ✓ {selectedAccommodation.name} selected 
-                    (${selectedAccommodation.pricePerNight * 3 * numberOfPeople} for 3 nights)
-                  </p>
+                  {selectedVegAccommodation && (
+                    <div className="mt-4 bg-green-50 border-2 border-green-200 rounded-xl p-4">
+                      <p className="text-green-800 font-semibold">
+                        ✓ {selectedVegAccommodation.name} selected for vegetarians
+                        (${selectedVegAccommodation.pricePerNight * 3 * vegetarianCount} for 3 nights)
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Non-Vegetarian Accommodations */}
+              {nonVegetarianCount > 0 && (
+                <div>
+                  <h3 className="text-xl font-bold text-red-700 mb-4 flex items-center">
+                    <span className="text-2xl mr-2">🍖</span>
+                    Non-Vegetarian Accommodations ({nonVegetarianCount} {nonVegetarianCount === 1 ? 'traveler' : 'travelers'})
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {destination.accommodations.nonVegetarian.map(acc => (
+                      <div
+                        key={acc.id}
+                        onClick={() => selectNonVegAccommodation(acc)}
+                        className={`bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition duration-200 hover:scale-105 ${
+                          selectedNonVegAccommodation?.id === acc.id ? 'ring-4 ring-red-500' : ''
+                        }`}
+                      >
+                        <div className={`h-3 ${selectedNonVegAccommodation?.id === acc.id ? 'bg-red-500' : 'bg-gradient-to-r from-red-400 to-orange-500'}`}></div>
+                        <div className="p-6">
+                          <div className="flex justify-between items-start mb-4">
+                            <div>
+                              <h3 className="text-xl font-bold text-gray-800 mb-2">{acc.name}</h3>
+                              <div className="flex items-center">
+                                <span className="text-yellow-500 mr-1">⭐</span>
+                                <span className="font-semibold text-gray-700">{acc.rating}</span>
+                                <span className="text-gray-500 text-sm ml-1">/ 5.0</span>
+                              </div>
+                            </div>
+                            {selectedNonVegAccommodation?.id === acc.id && (
+                              <div className="bg-red-500 text-white rounded-full p-2">
+                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="mb-4">
+                            <div className="text-3xl font-bold text-red-600 mb-1">
+                              ${acc.pricePerNight}
+                              <span className="text-sm text-gray-500 font-normal"> / night</span>
+                            </div>
+                            <p className="text-sm text-gray-600">
+                              Total for 3 nights: ${acc.pricePerNight * 3 * nonVegetarianCount}
+                            </p>
+                          </div>
+
+                          <div className="border-t pt-4">
+                            <p className="text-sm font-semibold text-gray-700 mb-2">Amenities:</p>
+                            <div className="flex flex-wrap gap-2">
+                              {acc.amenities.map((amenity, index) => (
+                                <span
+                                  key={index}
+                                  className="bg-red-100 text-red-800 text-xs font-medium px-3 py-1 rounded-full"
+                                >
+                                  {amenity}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedNonVegAccommodation && (
+                    <div className="mt-4 bg-red-50 border-2 border-red-200 rounded-xl p-4">
+                      <p className="text-red-800 font-semibold">
+                        ✓ {selectedNonVegAccommodation.name} selected for non-vegetarians
+                        (${selectedNonVegAccommodation.pricePerNight * 3 * nonVegetarianCount} for 3 nights)
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -293,7 +393,8 @@ function TripSuggestions({
               <h3 className="text-xl font-bold text-gray-800 mb-1">Ready to finalize your trip?</h3>
               <p className="text-gray-600">
                 {selectedNearbyPlaces.length} attraction{selectedNearbyPlaces.length !== 1 ? 's' : ''} selected
-                {selectedAccommodation && ` • Accommodation: ${selectedAccommodation.name}`}
+                {selectedVegAccommodation && vegetarianCount > 0 && ` • Veg: ${selectedVegAccommodation.name}`}
+                {selectedNonVegAccommodation && nonVegetarianCount > 0 && ` • Non-Veg: ${selectedNonVegAccommodation.name}`}
               </p>
             </div>
             <button

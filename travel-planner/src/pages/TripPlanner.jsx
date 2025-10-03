@@ -6,9 +6,9 @@ function TripPlanner({ setTripData }) {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     destination: '',
-    numberOfPeople: 1,
-    budget: 1000,
-    foodPreference: 'vegetarian'
+    vegetarianCount: 0,
+    nonVegetarianCount: 0,
+    budget: 1000
   })
 
   const handleSubmit = (e) => {
@@ -24,18 +24,26 @@ function TripPlanner({ setTripData }) {
       return
     }
 
+    // Validate at least one person
+    const totalPeople = formData.vegetarianCount + formData.nonVegetarianCount
+    if (totalPeople === 0) {
+      alert('Please add at least one traveler (vegetarian or non-vegetarian)')
+      return
+    }
+
     // Calculate trip price
-    const basePrice = selectedDestination.baseCost * formData.numberOfPeople
+    const basePrice = selectedDestination.baseCost * totalPeople
     const budgetMultiplier = formData.budget / 1000 // Scale based on budget
     const totalPrice = Math.round(basePrice * budgetMultiplier)
 
     // Prepare trip data
     const tripInfo = {
       destination: selectedDestination,
-      numberOfPeople: formData.numberOfPeople,
+      vegetarianCount: formData.vegetarianCount,
+      nonVegetarianCount: formData.nonVegetarianCount,
+      totalPeople: totalPeople,
       budget: formData.budget,
-      totalPrice: totalPrice,
-      foodPreference: formData.foodPreference
+      totalPrice: totalPrice
     }
 
     setTripData(tripInfo)
@@ -46,9 +54,11 @@ function TripPlanner({ setTripData }) {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'numberOfPeople' || name === 'budget' ? parseInt(value) : value
+      [name]: name === 'vegetarianCount' || name === 'nonVegetarianCount' || name === 'budget' ? parseInt(value) : value
     }))
   }
+
+  const totalTravelers = formData.vegetarianCount + formData.nonVegetarianCount
 
   return (
     <div className="min-h-screen py-12 px-4">
@@ -95,30 +105,75 @@ function TripPlanner({ setTripData }) {
               </select>
             </div>
 
-            {/* Number of People */}
+            {/* Number of Travelers by Food Preference */}
             <div>
-              <label htmlFor="numberOfPeople" className="block text-lg font-semibold text-gray-800 mb-3">
-                Number of Travelers
+              <label className="block text-lg font-semibold text-gray-800 mb-3">
+                Number of Travelers by Food Preference
               </label>
-              <div className="relative">
-                <input
-                  type="number"
-                  id="numberOfPeople"
-                  name="numberOfPeople"
-                  min="1"
-                  max="20"
-                  value={formData.numberOfPeople}
-                  onChange={handleChange}
-                  className="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 bg-gray-50"
-                  required
-                />
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-3">
-                  <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
+              
+              {/* Vegetarian Count */}
+              <div className="mb-4">
+                <label htmlFor="vegetarianCount" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                  <span className="text-2xl mr-2">🥗</span>
+                  Vegetarian Travelers
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    id="vegetarianCount"
+                    name="vegetarianCount"
+                    min="0"
+                    max="20"
+                    value={formData.vegetarianCount}
+                    onChange={handleChange}
+                    className="w-full px-6 py-4 text-lg border-2 border-green-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 bg-green-50"
+                  />
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <span className="text-sm font-medium text-green-700">people</span>
+                  </div>
                 </div>
               </div>
-              <p className="mt-2 text-sm text-gray-500">Selected: {formData.numberOfPeople} {formData.numberOfPeople === 1 ? 'person' : 'people'}</p>
+
+              {/* Non-Vegetarian Count */}
+              <div className="mb-4">
+                <label htmlFor="nonVegetarianCount" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+                  <span className="text-2xl mr-2">🍖</span>
+                  Non-Vegetarian Travelers
+                </label>
+                <div className="relative">
+                  <input
+                    type="number"
+                    id="nonVegetarianCount"
+                    name="nonVegetarianCount"
+                    min="0"
+                    max="20"
+                    value={formData.nonVegetarianCount}
+                    onChange={handleChange}
+                    className="w-full px-6 py-4 text-lg border-2 border-red-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-200 bg-red-50"
+                  />
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <span className="text-sm font-medium text-red-700">people</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Total Summary */}
+              <div className="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-800">Total Travelers:</span>
+                  <span className="text-2xl font-bold text-indigo-600">{totalTravelers}</span>
+                </div>
+                {totalTravelers > 0 && (
+                  <div className="mt-2 text-sm text-gray-600">
+                    {formData.vegetarianCount > 0 && (
+                      <span className="mr-3">🥗 {formData.vegetarianCount} Veg</span>
+                    )}
+                    {formData.nonVegetarianCount > 0 && (
+                      <span>🍖 {formData.nonVegetarianCount} Non-Veg</span>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Budget */}
@@ -156,65 +211,6 @@ function TripPlanner({ setTripData }) {
               </div>
             </div>
 
-            {/* Food Preference */}
-            <div>
-              <label className="block text-lg font-semibold text-gray-800 mb-3">
-                Food Preference
-              </label>
-              <div className="grid grid-cols-2 gap-4">
-                <label className={`relative flex items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition duration-200 ${
-                  formData.foodPreference === 'vegetarian' 
-                    ? 'border-green-500 bg-green-50' 
-                    : 'border-gray-300 hover:border-green-300'
-                }`}>
-                  <input
-                    type="radio"
-                    name="foodPreference"
-                    value="vegetarian"
-                    checked={formData.foodPreference === 'vegetarian'}
-                    onChange={handleChange}
-                    className="sr-only"
-                  />
-                  <div className="text-center">
-                    <div className="text-3xl mb-2">🥗</div>
-                    <span className="font-medium text-gray-800">Vegetarian</span>
-                  </div>
-                  {formData.foodPreference === 'vegetarian' && (
-                    <div className="absolute top-2 right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  )}
-                </label>
-
-                <label className={`relative flex items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition duration-200 ${
-                  formData.foodPreference === 'nonVegetarian' 
-                    ? 'border-red-500 bg-red-50' 
-                    : 'border-gray-300 hover:border-red-300'
-                }`}>
-                  <input
-                    type="radio"
-                    name="foodPreference"
-                    value="nonVegetarian"
-                    checked={formData.foodPreference === 'nonVegetarian'}
-                    onChange={handleChange}
-                    className="sr-only"
-                  />
-                  <div className="text-center">
-                    <div className="text-3xl mb-2">🍖</div>
-                    <span className="font-medium text-gray-800">Non-Vegetarian</span>
-                  </div>
-                  {formData.foodPreference === 'nonVegetarian' && (
-                    <div className="absolute top-2 right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                  )}
-                </label>
-              </div>
-            </div>
 
             {/* Submit Button */}
             <button

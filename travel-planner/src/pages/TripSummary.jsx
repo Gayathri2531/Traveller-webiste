@@ -1,18 +1,30 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useCurrency } from '../context/CurrencyContext'
+import CurrencyToggle from '../components/CurrencyToggle'
 
-function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) {
+function TripSummary({ tripData, selectedNearbyPlaces, selectedVegAccommodation, selectedNonVegAccommodation }) {
   const navigate = useNavigate()
+  const { formatPrice } = useCurrency()
 
   if (!tripData) {
     return null
   }
 
-  const { destination, numberOfPeople, budget, totalPrice, foodPreference } = tripData
+  const { destination, vegetarianCount, nonVegetarianCount, totalPeople, budget, totalPrice } = tripData
 
   const totalNearbyPlacesCost = selectedNearbyPlaces.reduce((sum, place) => sum + place.cost, 0)
-  const accommodationCost = selectedAccommodation ? selectedAccommodation.pricePerNight * 3 * numberOfPeople : 0
-  const grandTotal = totalPrice + (totalNearbyPlacesCost * numberOfPeople) + accommodationCost
+  
+  const vegAccommodationCost = selectedVegAccommodation && vegetarianCount > 0
+    ? selectedVegAccommodation.pricePerNight * 3 * vegetarianCount 
+    : 0
+  
+  const nonVegAccommodationCost = selectedNonVegAccommodation && nonVegetarianCount > 0
+    ? selectedNonVegAccommodation.pricePerNight * 3 * nonVegetarianCount 
+    : 0
+  
+  const totalAccommodationCost = vegAccommodationCost + nonVegAccommodationCost
+  const grandTotal = totalPrice + (totalNearbyPlacesCost * totalPeople) + totalAccommodationCost
 
   const handleNewTrip = () => {
     navigate('/planner')
@@ -25,6 +37,20 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
   return (
     <div className="min-h-screen py-8 px-4">
       <div className="max-w-5xl mx-auto">
+        {/* Header with Back Button and Currency Toggle */}
+        <div className="flex justify-between items-center mb-8">
+          <button
+            onClick={() => navigate('/suggestions')}
+            className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg hover:bg-gray-100 transition duration-200 shadow-md"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span className="font-medium">Back to Suggestions</span>
+          </button>
+          <CurrencyToggle />
+        </div>
+
         {/* Success Header */}
         <div className="text-center mb-8">
           <div className="inline-block p-4 bg-green-100 rounded-full mb-4">
@@ -47,7 +73,7 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
               </div>
               <div className="text-right">
                 <div className="text-sm opacity-90 mb-1">Total Cost</div>
-                <div className="text-4xl font-bold">${grandTotal.toLocaleString()}</div>
+                <div className="text-4xl font-bold">{formatPrice(grandTotal)}</div>
               </div>
             </div>
           </div>
@@ -58,18 +84,31 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="bg-blue-50 rounded-xl p-6">
                 <div className="text-3xl mb-3">👥</div>
-                <div className="text-sm text-gray-600 mb-1">Number of Travelers</div>
-                <div className="text-2xl font-bold text-gray-800">{numberOfPeople}</div>
+                <div className="text-sm text-gray-600 mb-1">Total Travelers</div>
+                <div className="text-2xl font-bold text-gray-800">{totalPeople}</div>
+                <div className="mt-2 text-sm text-gray-700">
+                  {vegetarianCount > 0 && <div>🥗 {vegetarianCount} Vegetarian</div>}
+                  {nonVegetarianCount > 0 && <div>🍖 {nonVegetarianCount} Non-Vegetarian</div>}
+                </div>
               </div>
               <div className="bg-green-50 rounded-xl p-6">
                 <div className="text-3xl mb-3">💰</div>
                 <div className="text-sm text-gray-600 mb-1">Your Budget</div>
-                <div className="text-2xl font-bold text-gray-800">${budget.toLocaleString()}</div>
+                <div className="text-2xl font-bold text-gray-800">{formatPrice(budget)}</div>
               </div>
               <div className="bg-purple-50 rounded-xl p-6">
-                <div className="text-3xl mb-3">{foodPreference === 'vegetarian' ? '🥗' : '🍖'}</div>
-                <div className="text-sm text-gray-600 mb-1">Food Preference</div>
-                <div className="text-2xl font-bold text-gray-800 capitalize">{foodPreference}</div>
+                <div className="text-3xl mb-3">🏨</div>
+                <div className="text-sm text-gray-600 mb-1">Accommodations</div>
+                <div className="text-sm font-bold text-gray-800">
+                  {(selectedVegAccommodation || selectedNonVegAccommodation) ? (
+                    <>
+                      {selectedVegAccommodation && <div className="mb-1">✓ Veg Hotel</div>}
+                      {selectedNonVegAccommodation && <div>✓ Non-Veg Hotel</div>}
+                    </>
+                  ) : (
+                    'None Selected'
+                  )}
+                </div>
               </div>
             </div>
 
@@ -90,8 +129,8 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
                     <p className="text-gray-600">Base Package</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-indigo-600">${totalPrice.toLocaleString()}</p>
-                    <p className="text-sm text-gray-500">for {numberOfPeople} {numberOfPeople === 1 ? 'person' : 'people'}</p>
+                    <p className="text-2xl font-bold text-indigo-600">{formatPrice(totalPrice)}</p>
+                    <p className="text-sm text-gray-500">for {totalPeople} {totalPeople === 1 ? 'person' : 'people'}</p>
                   </div>
                 </div>
               </div>
@@ -116,21 +155,21 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
                         <p className="text-sm text-gray-600">{place.description}</p>
                       </div>
                       <div className="text-right ml-4">
-                        <p className="font-bold text-green-600">${place.cost * numberOfPeople}</p>
-                        <p className="text-xs text-gray-500">${place.cost} × {numberOfPeople}</p>
+                        <p className="font-bold text-green-600">{formatPrice(place.cost * totalPeople)}</p>
+                        <p className="text-xs text-gray-500">{formatPrice(place.cost)} × {totalPeople}</p>
                       </div>
                     </div>
                   ))}
                   <div className="bg-green-100 rounded-xl p-4 flex justify-between items-center font-semibold">
                     <span className="text-gray-800">Attractions Subtotal</span>
-                    <span className="text-green-700 text-lg">${totalNearbyPlacesCost * numberOfPeople}</span>
+                    <span className="text-green-700 text-lg">{formatPrice(totalNearbyPlacesCost * totalPeople)}</span>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Selected Accommodation */}
-            {selectedAccommodation && (
+            {/* Selected Accommodations */}
+            {(selectedVegAccommodation || selectedNonVegAccommodation) && (
               <div className="mb-8">
                 <h3 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
                   <span className="bg-purple-100 text-purple-600 rounded-lg p-2 mr-3">
@@ -138,35 +177,78 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
                   </span>
-                  Accommodation
+                  Selected Accommodations
                 </h3>
-                <div className="bg-purple-50 rounded-xl p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <p className="text-xl font-bold text-gray-800 mb-1">{selectedAccommodation.name}</p>
-                      <div className="flex items-center mb-2">
-                        <span className="text-yellow-500 mr-1">⭐</span>
-                        <span className="font-semibold text-gray-700">{selectedAccommodation.rating}</span>
-                        <span className="text-gray-500 text-sm ml-1">/ 5.0</span>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedAccommodation.amenities.map((amenity, index) => (
-                          <span
-                            key={index}
-                            className="bg-purple-200 text-purple-800 text-xs font-medium px-2 py-1 rounded"
-                          >
-                            {amenity}
-                          </span>
-                        ))}
-                      </div>
+                
+                {/* Vegetarian Accommodation */}
+                {selectedVegAccommodation && vegetarianCount > 0 && (
+                  <div className="bg-green-50 rounded-xl p-6 mb-4">
+                    <div className="flex items-center mb-3">
+                      <span className="text-2xl mr-2">🥗</span>
+                      <h4 className="text-lg font-bold text-green-700">Vegetarian Accommodation</h4>
                     </div>
-                    <div className="text-right">
-                      <p className="text-2xl font-bold text-purple-600">${accommodationCost}</p>
-                      <p className="text-sm text-gray-600">3 nights × {numberOfPeople}</p>
-                      <p className="text-xs text-gray-500">${selectedAccommodation.pricePerNight}/night</p>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="text-xl font-bold text-gray-800 mb-1">{selectedVegAccommodation.name}</p>
+                        <div className="flex items-center mb-2">
+                          <span className="text-yellow-500 mr-1">⭐</span>
+                          <span className="font-semibold text-gray-700">{selectedVegAccommodation.rating}</span>
+                          <span className="text-gray-500 text-sm ml-1">/ 5.0</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedVegAccommodation.amenities.map((amenity, index) => (
+                            <span
+                              key={index}
+                              className="bg-green-200 text-green-800 text-xs font-medium px-2 py-1 rounded"
+                            >
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-right ml-4">
+                        <p className="text-2xl font-bold text-green-600">{formatPrice(vegAccommodationCost)}</p>
+                        <p className="text-sm text-gray-600">3 nights × {vegetarianCount}</p>
+                        <p className="text-xs text-gray-500">{formatPrice(selectedVegAccommodation.pricePerNight)}/night</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
+
+                {/* Non-Vegetarian Accommodation */}
+                {selectedNonVegAccommodation && nonVegetarianCount > 0 && (
+                  <div className="bg-red-50 rounded-xl p-6">
+                    <div className="flex items-center mb-3">
+                      <span className="text-2xl mr-2">🍖</span>
+                      <h4 className="text-lg font-bold text-red-700">Non-Vegetarian Accommodation</h4>
+                    </div>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="text-xl font-bold text-gray-800 mb-1">{selectedNonVegAccommodation.name}</p>
+                        <div className="flex items-center mb-2">
+                          <span className="text-yellow-500 mr-1">⭐</span>
+                          <span className="font-semibold text-gray-700">{selectedNonVegAccommodation.rating}</span>
+                          <span className="text-gray-500 text-sm ml-1">/ 5.0</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedNonVegAccommodation.amenities.map((amenity, index) => (
+                            <span
+                              key={index}
+                              className="bg-red-200 text-red-800 text-xs font-medium px-2 py-1 rounded"
+                            >
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="text-right ml-4">
+                        <p className="text-2xl font-bold text-red-600">{formatPrice(nonVegAccommodationCost)}</p>
+                        <p className="text-sm text-gray-600">3 nights × {nonVegetarianCount}</p>
+                        <p className="text-xs text-gray-500">{formatPrice(selectedNonVegAccommodation.pricePerNight)}/night</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -204,24 +286,24 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
               <div className="space-y-3 mb-4">
                 <div className="flex justify-between text-gray-700">
                   <span>Base Package ({destination.name})</span>
-                  <span className="font-semibold">${totalPrice.toLocaleString()}</span>
+                  <span className="font-semibold">{formatPrice(totalPrice)}</span>
                 </div>
                 {selectedNearbyPlaces.length > 0 && (
                   <div className="flex justify-between text-gray-700">
                     <span>Attractions ({selectedNearbyPlaces.length} places)</span>
-                    <span className="font-semibold">${(totalNearbyPlacesCost * numberOfPeople).toLocaleString()}</span>
+                    <span className="font-semibold">{formatPrice(totalNearbyPlacesCost * totalPeople)}</span>
                   </div>
                 )}
-                {selectedAccommodation && (
+                {totalAccommodationCost > 0 && (
                   <div className="flex justify-between text-gray-700">
                     <span>Accommodation (3 nights)</span>
-                    <span className="font-semibold">${accommodationCost.toLocaleString()}</span>
+                    <span className="font-semibold">{formatPrice(totalAccommodationCost)}</span>
                   </div>
                 )}
               </div>
               <div className="border-t-2 border-gray-300 pt-4 flex justify-between items-center">
                 <span className="text-2xl font-bold text-gray-800">Grand Total</span>
-                <span className="text-4xl font-bold text-indigo-600">${grandTotal.toLocaleString()}</span>
+                <span className="text-4xl font-bold text-indigo-600">{formatPrice(grandTotal)}</span>
               </div>
               {grandTotal <= budget && (
                 <div className="mt-4 bg-green-100 border-2 border-green-300 rounded-xl p-4 flex items-center">
@@ -229,7 +311,7 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                   <span className="text-green-800 font-semibold">
-                    Great! Your trip is within budget (${(budget - grandTotal).toLocaleString()} under budget)
+                    Great! Your trip is within budget ({formatPrice(budget - grandTotal)} under budget)
                   </span>
                 </div>
               )}
@@ -239,7 +321,7 @@ function TripSummary({ tripData, selectedNearbyPlaces, selectedAccommodation }) 
                     <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                   </svg>
                   <span className="text-yellow-800 font-semibold">
-                    Note: Trip exceeds budget by ${(grandTotal - budget).toLocaleString()}
+                    Note: Trip exceeds budget by {formatPrice(grandTotal - budget)}
                   </span>
                 </div>
               )}

@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { CurrencyProvider } from './context/CurrencyContext'
+import TravelBackground from './components/TravelBackground'
 import Login from './pages/Login'
 import TripPlanner from './pages/TripPlanner'
 import TripSuggestions from './pages/TripSuggestions'
@@ -9,12 +11,15 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [tripData, setTripData] = useState(null)
   const [selectedNearbyPlaces, setSelectedNearbyPlaces] = useState([])
-  const [selectedAccommodation, setSelectedAccommodation] = useState(null)
+  const [selectedVegAccommodation, setSelectedVegAccommodation] = useState(null)
+  const [selectedNonVegAccommodation, setSelectedNonVegAccommodation] = useState(null)
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-        <Routes>
+    <CurrencyProvider>
+      <Router>
+        <div className="min-h-screen relative">
+          <TravelBackground />
+          <Routes>
           <Route 
             path="/login" 
             element={
@@ -40,8 +45,10 @@ function App() {
                 tripData={tripData} 
                 selectedNearbyPlaces={selectedNearbyPlaces}
                 setSelectedNearbyPlaces={setSelectedNearbyPlaces}
-                selectedAccommodation={selectedAccommodation}
-                setSelectedAccommodation={setSelectedAccommodation}
+                selectedVegAccommodation={selectedVegAccommodation}
+                setSelectedVegAccommodation={setSelectedVegAccommodation}
+                selectedNonVegAccommodation={selectedNonVegAccommodation}
+                setSelectedNonVegAccommodation={setSelectedNonVegAccommodation}
               />
             } 
           />
@@ -53,14 +60,16 @@ function App() {
               <TripSummary 
                 tripData={tripData}
                 selectedNearbyPlaces={selectedNearbyPlaces}
-                selectedAccommodation={selectedAccommodation}
+                selectedVegAccommodation={selectedVegAccommodation}
+                selectedNonVegAccommodation={selectedNonVegAccommodation}
               />
             } 
           />
           <Route path="/" element={<Navigate to="/login" />} />
-        </Routes>
-      </div>
-    </Router>
+          </Routes>
+        </div>
+      </Router>
+    </CurrencyProvider>
   )
 }
 
